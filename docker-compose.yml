@@ -11,7 +11,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
   data-restore:
-    image: "matterlabs/data-restore:5e418bde2"
+    image: "matterlabs/data-restore:latest"
     depends_on:
       - postgres
     init: true
