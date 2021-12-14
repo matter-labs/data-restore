@@ -20,3 +20,10 @@ services:
     - type: bind
       source: ./volumes/data-restore
       target: /pg_restore
+  server:
+    image: "matterlabs/server:ca06de20e"
+    entrypoint: zksync_server --components web3-api
+    env_file: data-restore.env
+    ports:
+      - 3002:3002
+
