@@ -43,3 +43,26 @@ Once you're done, shut down the services:
 $ docker-compose down
 ```
 
+## Running zkSync web3 read-only node
+
+Some use-cases may require you to read data from zkSync in a trustless manner. To bootstrap a local read-only zkSync node, which reads the data from Ethereum, run the following command:
+
+```
+docker-compose -f docker-compose-zksync-node.yml up
+```
+
+This will run the `data-restore` tool as well as `server`, which will read data directly from the database created by it.
+
+The web3 API can be accessed via the following endpoint:
+
+```
+http://127.0.0.1:3002
+```
+
+To change the port to which the zkSync node binds, you should modify the following parameter:
+
+```
+API_WEB3_PORT=3002
+```
+
+Make sure to change the port in the `docker-compose-zksync-node.yml` as well.

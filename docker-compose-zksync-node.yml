@@ -1,0 +1,29 @@
+version: '3.2'
+services:
+  postgres:
+    image: "postgres:12"
+    volumes:
+    - type: bind
+      source: ./volumes/postgres
+      target: /var/lib/postgresql/data
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+  data-restore:
+    image: "matterlabs/data-restore:latest"
+    depends_on:
+      - postgres
+    init: true
+    env_file: data-restore.env
+    volumes:
+    - type: bind
+      source: ./volumes/data-restore
+      target: /pg_restore
+  server:
+    image: "matterlabs/server:ca06de20e"
+    entrypoint: zksync_server --components web3-api
+    env_file: data-restore.env
+    ports:
+      - 3002:3002
+
