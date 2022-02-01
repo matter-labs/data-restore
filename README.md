@@ -1,12 +1,17 @@
-Prerequisites: `docker` and `docker-compose`.
+Prerequisites: [docker](https://docs.docker.com/engine/install/), [docker-compose](https://docs.docker.com/compose/install/) and [gsutil](https://cloud.google.com/storage/docs/gsutil_install).
 
-Clone the repository, create volumes for containers:
+Clone the repository:
+```sh
+git clone https://github.com/matter-labs/data-restore.git
+```
+
+Create volumes for containers:
 ```sh
 $ mkdir -p volumes/data-restore volumes/postgres
 ```
-Before starting containers configure `data-restore.env`:
 
-```sh 
+Before starting containers configure `data-restore.env`:
+```sh
 # genesis or continue
 COMMAND=
 
@@ -26,7 +31,17 @@ PG_DUMP=
 # true (default if left empty) or false
 FINITE_MODE=
 ```
-**Warning**: only set PG_DUMP for a single run, remove it for consequent usage. If data-restore is interrupted, it's advised to start again with the PG_DUMP set.
+
+Restoring from mainnet genesis is quite expensive and takes a long time, so we publish nightly database dumps that you can download and use for `PG_DUMP`:
+```sh
+gsutil -u <your GCP project> cp gs://zksync-data-restore/data_restore.dump ./volumes/data-restore/data_restore.dump
+```
+
+Your GCP project is required because the bucket is set to [requester pays](https://cloud.google.com/storage/docs/requester-pays), to keep the setup sustainable. 
+
+Once downloaded, just set `PG_DUMP=data_restore.dump`, which should save you a few days of syncing.
+
+**Warning**: only set `PG_DUMP` for a single run, remove it for consequent usage. If data-restore is interrupted, it's advised to start again with the `PG_DUMP` set.
 
 To run the restore:
 ```sh
