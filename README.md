@@ -1,4 +1,4 @@
-Prerequisites: [docker](https://docs.docker.com/engine/install/), [docker-compose](https://docs.docker.com/compose/install/) and [gsutil](https://cloud.google.com/storage/docs/gsutil_install).
+Prerequisites: [docker](https://docs.docker.com/engine/install/), [docker-compose](https://docs.docker.com/compose/install/) and [gsutil](https://cloud.google.com/storage/docs/gsutil_install) or [awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 
 Clone the repository:
 ```sh
@@ -35,9 +35,12 @@ FINITE_MODE=
 Restoring from mainnet genesis is quite expensive and takes a long time, so we publish nightly database dumps that you can download and use for `PG_DUMP`:
 ```sh
 gsutil -u <your GCP project> cp gs://zksync-data-restore/data_restore.dump ./volumes/data-restore/data_restore.dump
+
+# Or AWS
+aws s3 cp s3://zksync-data-restore/data_restore.dump ./volumes/data-restore/data_restore.dump --request-payer requester
 ```
 
-Your GCP project is required because the bucket is set to [requester pays](https://cloud.google.com/storage/docs/requester-pays), to keep the setup sustainable. 
+Your GCP project/AWS account is required because the bucket is set to requester pays ([GCP](https://cloud.google.com/storage/docs/requester-pays), [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html)), to keep the setup sustainable. 
 
 Once downloaded, just set `PG_DUMP=data_restore.dump`, which should save you a few days of syncing.
 
