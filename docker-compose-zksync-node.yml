@@ -21,7 +21,7 @@ services:
       source: ./volumes/data-restore
       target: /pg_restore
   server:
-    image: "matterlabs/server:ca06de20e"
+    image: "matterlabs/server:latest"
     entrypoint: zksync_server --components web3-api
     env_file: data-restore.env
     ports:
