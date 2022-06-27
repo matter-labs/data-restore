@@ -85,19 +85,11 @@ Prerequisites: [gsutil](https://cloud.google.com/storage/docs/gsutil_install) or
 Restoring from genesis is quite expensive and takes a long time, so we publish nightly database dumps that you can download and use for `PG_DUMP`:
 ```sh
 # Mainnet
-# GCP
-gsutil -u <your GCP project> cp gs://zksync-data-restore/data_restore.dump ./volumes/data-restore/data_restore.dump
-# Or AWS
-aws s3 cp s3://zksync-data-restore/data_restore.dump ./volumes/data-restore/data_restore.dump --request-payer requester
+https://storage.googleapis.com/zksync-data-restore/data-restore-mainnet.dump
 
 # Rinkeby
-# GCP
-gsutil -u <your GCP project> cp gs://zksync-data-restore/data_restore_rinkeby.dump ./volumes/data-restore/data_restore_rinkeby.dump
-# Or AWS
-aws s3 cp s3://zksync-data-restore/data_restore_rinkeby.dump ./volumes/data-restore/data_restore_rinkeby.dump --request-payer requester
+https://storage.googleapis.com/zksync-data-restore/data-restore-rinkeby.dump
 ```
-
-Your GCP project/AWS account is required because the bucket is set to requester pays ([GCP](https://cloud.google.com/storage/docs/requester-pays), [AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/RequesterPaysBuckets.html)), to keep the setup sustainable. 
 
 Once downloaded, just set `PG_DUMP=data_restore.dump`, which should save you a few days of syncing.
 *NOTE* if you are buidling data-restore from scratch you need to set env `PG_DUMP_PATH` - Path to the dump
